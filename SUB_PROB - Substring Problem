@@ -1,0 +1,134 @@
+#include<bits/stdc++.h>
+using namespace std;
+int to[100050][123],sn=1;
+int link[200000]={0};
+int term[200000]={0};
+map<int,string> m;
+map<string,int>m2;
+void add_str(string pat)
+{
+	int curr=0;
+	string s="";
+	for(int i=0;i<pat.length();i++)
+	{
+		s+=pat[i];
+
+		if(to[curr][pat[i]]==-1)
+		{
+			to[curr][pat[i]]=sn++;
+
+		}
+		curr = to[curr][pat[i]];
+		m[curr]=s;
+
+	}
+	term[curr]=curr;
+}
+void push_links()
+{
+	queue<int> q;
+	q.push(0);
+	while(!q.empty())
+	{
+		// cout<<"too much"<<endl;
+		int V=q.front();
+		q.pop();
+		// int V=front;
+		int U=link[V];
+		// cout<<"V "<<V<<"  "<<"U "<<U<<endl;
+		// if(!term[V]){ term[U] = term[V]; }
+		for(int i=0;i<123;i++)
+		{
+
+			int c = to[V][i];
+			if(c!=-1)
+			{
+				if(V==0)
+					link[c]=0;
+				else
+				{
+					link[c]=max(0,to[U][i]);
+				}
+				q.push(c);
+			}
+			// else
+			// {
+			// 	to[V][c] = to[U][c];
+			// }
+			// cout<<"c is "<<c<<" linkc "<<link[c]<<endl;
+		}
+	}
+}
+void patternsearch(string s)
+{
+	int curr=0;
+	for(int i=0;i<s.length();i++)
+	{
+		int c=s[i];
+		while(to[curr][c]==-1)
+		{
+			curr=link[curr];
+			if(curr==0&&to[curr][c]==-1)
+			{
+				break;
+			}
+			// continue;
+		}
+		// cout<<to[curr][c]<<endl;
+		if(to[curr][c]!=-1)
+		{
+			int node = to[curr][c];
+			curr=node;
+			if(term[node])
+			{
+				int lenout = m[node].length();
+				// cout<<i-lenout+1<<"to "<<i<<" "<<s[i]<<" index in pattern " << i <<" node is "<<node<<" "<<m[node]<<endl;
+				m2[m[node]]=lenout;
+			}
+			// cout<<"link["<<node<<"] "<<link[node]<<endl;
+			while(link[node]>0&&term[link[node]])
+			{
+				int lenout = m[link[node]].length();
+				m2[m[link[node]]]=lenout;
+				// cout<<i-lenout+1<<"to "<<i<<" "<<s[i]<<" index in pattern " << i <<" node is "<<link[node]<<" "<<m[link[node]]<<endl;
+				node = link[node];
+			}
+		}
+
+	}
+}
+int main()
+{
+	string text;
+	cin>>text;
+	int n;
+	cin>>n;
+	string pat[n];
+	memset(to,-1,sizeof(to));
+	for(int i=0;i<n;i++)
+	{
+		cin>>pat[i];
+		add_str(pat[i]);
+	}
+	
+	push_links();
+	
+	patternsearch(text);
+	bool flag=false;
+	for(int i=0;i<n;i++)
+	{
+		if(m2[pat[i]]==0)
+		{
+			cout<<"N"<<endl;
+		}
+		else
+		{
+			cout<<"Y"<<endl;
+		}
+	}
+	
+
+	
+	
+	
+}
