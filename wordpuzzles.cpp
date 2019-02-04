@@ -1,9 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define mp make_pair
-int to[1000500][27],sn=1;
-int link[1000050]={0};
-int term[1000050]={0};
+int to[2000500][27],sn=1;
+int link[2000050]={0};
+int term[2000050]={0};
 map<int,string> m;
 map<string,pair<int,pair<int,int> > >m2;
 int L,C,n;
@@ -51,7 +51,7 @@ void push_links()
 					link[c]=0;
 				else
 				{
-					// link[c]=max(0,to[U][i]);
+					//link[c]=max(0,to[U][i]);
 					int temp=U;
 					while(1)
 					{
@@ -104,6 +104,7 @@ void process(char s, int direction, int i, int j, int *curr1)
 			// cout<<i-lenout+1<<"to "<<i<<" "<<s[i]<<" index in pattern " << i <<" node is "<<node<<" "<<m[node]<<endl;
 			
 			// cout<<m[node]<<endl;
+				//cout<<"107"<<endl;
 				m2[m[node]]=mp(direction,mp(i,j));
 			
 		}
@@ -112,7 +113,7 @@ void process(char s, int direction, int i, int j, int *curr1)
 		{
 			// int lenout = m[link[node]].length();
 			
-
+				//cout<<"116"<<endl;
 				m2[m[link[node]]]=mp(direction,mp(i,j));
 				// cout<<i-lenout+1<<"to "<<i<<" "<<s[i]<<" index in pattern " << i <<" node is "<<link[node]<<" "<<m[link[node]]<<endl;
 				node = link[node];
@@ -156,6 +157,7 @@ void patternsearch(char text[1010][1010], int direction)
 			int i=limit1i;
 			int j=limit1j;
 			int curr=0;
+			if(limit1i>=L||limit2i>=L||limit1j>=C||limit2j>=C||limit1i<0||limit2i<0||limit1j<0||limit2j<0) break;
 			while(i<=limit2i&&j<=limit2j)
 			{
 				process(text[i][j],direction,i,j,&curr);
@@ -170,12 +172,14 @@ void patternsearch(char text[1010][1010], int direction)
 				limit1j++;
 				limit1i++;
 			}
-			if(limit2i>=L)
+			if(limit2i==L)
 			{
 				
 				limit2i--;
 				limit2j--;
 			}
+			//cout<<"179"<<endl;
+			if(limit1i>=L||limit2i>=L||limit1j>=C||limit2j>=C||limit1i<0||limit2i<0||limit1j<0||limit2j<0) break;
 			if(limit1i>=0&&limit1j>=0&&limit2i>=0&&limit2j>=0&&limit1i==limit2i&&limit1j==limit2j)
 			{
 				process(text[limit1i][limit1j],direction,i,j,&curr);
@@ -194,6 +198,7 @@ void patternsearch(char text[1010][1010], int direction)
 		{
 			int i=limit1i;
 			int j=limit1j;
+			if(limit1i>=L||limit2i>=L||limit1j>=C||limit2j>=C||limit1i<0||limit2i<0||limit1j<0||limit2j<0) break;
 			int curr=0;
 			while(i<=limit2i&&j>=limit2j)
 			{
@@ -204,16 +209,20 @@ void patternsearch(char text[1010][1010], int direction)
 
 			limit1j++;
 			limit2i++;
-			if(limit1j>=C)
+			if(limit1j==C)
 			{
 				limit1j--;
 				limit1i++;
 			}
-			if(limit2i>=L)
+			if(limit2i==L)
 			{
 				limit2j++;
 				limit2i--;
 			}
+			//cout<<"219"<<endl;
+			//cout<<limit1i<<" "<<limit1j<<" "<<limit2i<<" "<<limit2j<<endl;
+			//break;
+			if(limit1i>=L||limit2i>=L||limit1j>=C||limit2j>=C||limit1i<0||limit2i<0||limit1j<0||limit2j<0) break;
 			if(limit1i>=0&&limit1j>=0&&limit2i>=0&&limit2j>=0&&limit1i==limit2i&&limit1j==limit2j)
 			{
 				process(text[limit1i][limit1j],direction,i,j,&curr);
@@ -281,7 +290,7 @@ int main()
 		// 		}
 		// 	}
 		// }
-		
+		//cout<<"I"<<endl;
 		push_links();
 		// for(int i=0;i<sn;i++)
 		// {
@@ -332,7 +341,7 @@ int main()
 				}
 				if(dir==2)
 				{
-					cout<<r-pat[i].length()+1<<" "<<c-pat[i].length()+1<<" D "<<endl;
+					cout<<r-pat[i].length()+1<<" "<<c-pat[i].length()+1<<" D"<<endl;
 				}
 				if(dir==3)
 				{
@@ -369,6 +378,7 @@ int main()
 			
 			
 		}
+		cout<<endl;
 		
 	}
 		
